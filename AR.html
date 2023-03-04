@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <title>Nodo Ambiente Túquerres</title>
+    <!-- import aframe and then ar.js with image tracking / location based features -->
+    <script src="https://aframe.io/releases/1.0.4/aframe.min.js"></script>
+    <script src="https://raw.githack.com/AR-js-org/AR.js/master/aframe/build/aframe-ar-nft.js"></script>
+    <script src="Js/aframe-video-controls.min.js"></script>
+    <script>
+      AFRAME.registerComponent('vidhandler', {
+        init: function () {
+          this.toggle = false;
+          document.querySelector("#video_1").pause(); //reference to the video
+        },
+        tick:function(){  
+          if(document.querySelector("a-nft").object3D.visible == true){
+            if(!this.toggle){
+              this.toggle = true;
+              document.querySelector("#video_1").play();
+            }
+          }else{
+              this.toggle = false;
+              document.querySelector("#video_1").pause();
+          }
+        }
+      });
+
+    </script>
+
+    <!-- style for the loader -->
+    <style>
+      .arjs-loader {
+        height: 100%;
+        width: 100%;
+        position: absolute;
+        top: 0;
+        left: 0;
+        background-color: rgba(0, 0, 0, 0.8);
+        z-index: 9999;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+
+      .arjs-loader div {
+        text-align: center;
+        font-size: 1.25em;
+        color: white;
+      }
+    </style>
+  </head>
+
+  <body style="margin : 0px; overflow: hidden;">
+    <!-- minimal loader shown until image descriptors are loaded. Loading may take a while according to the device computational power -->
+    <div class="arjs-loader">
+      <div>Loading, please wait...</div>
+    </div>
+
+    <!-- a-frame scene -->
+    <a-scene
+      vr-mode-ui="enabled: false;"
+      renderer="logarithmicDepthBuffer: true;"
+      embedded
+      arjs="trackingMethod: best; sourceType: webcam;debugUIEnabled: false;">
+      <!-- a-nft is the anchor that defines an Image Tracking entity -->
+      <!-- on 'url' use the path to the Image Descriptors created before. -->
+      <!-- the path should end with the name without the extension e.g. if file is trex.fset' the path should end with trex -->
+
+      <a-assets>
+        <video id="video_1" src="https://file-examples-com.github.io/uploads/2017/04/file_example_MP4_640_3MG.mp4"></video>
+      </a-assets>
+
+    
+      <a-entity id="mouseCursor" cursor="rayOrigin: mouse" raycaster="far: 100; objects: .clickable; useWorldCoordinates: true;"></a-entity>
+      <a-nft
+        type="nft"
+        url="Assets/ImageDescriptors/Azufral/laguna"
+        smooth="true"
+        smoothCount="10"
+        smoothTolerance=".01"
+        smoothThreshold="5"
+        size="0.2">
+          <!-- as a child of the a-nft entity, you can define the content to show. here's a GLTF model entity -->
+          <!--<a-entity
+            gltf-model="https://arjs-cors-proxy.herokuapp.com/https://raw.githack.com/AR-js-org/AR.js/master/aframe/examples/image-tracking/nft/trex/scene.gltf"
+            scale="10 10 10"
+            position="0 0 0"
+          >
+          </a-entity>-->
+          <a-box color="tomato" depth="4" position="50 100 0" scale="20 20 20" height="4" width="4">
+            
+          </a-box>
+
+            
+          <a-image 
+            position="0 0 0"
+            id="goto360"
+            scale="10 10 10" 
+            rotation ="90 0 0"
+            class="clickable" 
+            src="http://kaleidolab.co/wp-content/uploads/2018/06/LOGOS_NEGATIVO-02.png" 
+            width=30.9 
+            height=9.77 >
+          </a-image>
+          
+      </a-nft>
+
+
+      <a-nft
+        type="nft"
+        url="Assets/ImageDescriptors/Frailejon/frailejon"
+        smooth="true"
+        smoothCount="10"
+        smoothTolerance=".01"
+        smoothThreshold="5"
+        size="0.2">
+          <!--<a-box color="tomato" depth="4" position="0 -50 -50" scale="50 50 50" height="4" width="4"></a-box>-->
+          <a-video 
+            src="#video_1"
+            width="12.4"
+            height="7"
+            vidhandler
+            scale="20 20 20"
+            loop="true" 
+            crossorigin
+            rotation="90 0 0"
+            position="50 0 -315"
+            class="clickable">
+
+            <a-text id="text" class="clickable" scale="10 10 10" position="1 1 -1" rotation="0 0 0" value="text" color="white"></a-text>   
+
+            <a-entity text="value: Hello World;"></a-entity>
+          </a-video>
+      </a-nft>
+      <!-- static camera that moves according to the device movemenents -->
+      <a-entity camera="near:0.001"></a-entity>
+    </a-scene>
+  </body>
+</html>
